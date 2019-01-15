@@ -1,0 +1,62 @@
+#include <iostream>
+
+using namespace std;
+
+void add(double, double);
+
+void substract(double, double);
+
+void multiply(double, double);
+
+void divide(double,double);
+
+void add(double x, double y){
+    answer = n1 + n2;
+    cout << n1 << " + " << n2 << " = " << answer << endl;
+}
+
+void substract(double x, double y){
+    answer = n1 - n2;
+    cout << n1 << " - " << n2 << " = " << answer << endl;
+}
+
+void multiply(double x, double y){
+    answer = n1 * n2;
+    cout << n1 << " * " << n2 << " = " << answer << endl;
+}
+
+void divide(double x, double y){
+    if(n2 != 0){
+        answer = n1 / n2;
+        cout << n1 << " / " << n2 << " = " << answer << endl;
+    }
+    else{
+        cout << "cannot divide by 0" << endl;
+    }
+}
+
+int main(){
+    double n1, n2;
+    char op = '0';
+    cout << "input an expression:" << endl;
+    cin >> n1 >> op >>n2;
+    double answer;
+    if(op != '0'){
+        switch (op){
+            case '+':
+                add(double, double);
+                break;
+            case '-':
+                substract(double x, double y);
+                break;
+            case '*':
+                multiply(double, double);
+                break;
+            case '/':
+                divide(double,double);
+                break;
+        }
+    }
+
+    return 0;
+}

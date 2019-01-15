@@ -1,0 +1,18 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main(){
+    string name[3] = {"Dog", "Cat", "Monkey"};
+    cout << "Enter the name to search";
+    string aniname;
+    cin >> aniname;
+    for (int i = 0; i < 3; i++){
+        if (name[i] == aniname)
+        {
+            cout << name[i];
+        }
+    }
+    
+    return 0;
+}

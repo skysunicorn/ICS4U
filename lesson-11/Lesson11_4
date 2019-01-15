@@ -1,0 +1,22 @@
+#include <iostream>
+#include <cstring>
+#include <math.h>
+using namespace std;
+
+float f(int, int);
+
+float f(int x, int y){
+    float z = pow(x*x + y*y, 0.5);
+    
+    return z;
+}
+
+int main(){
+    cout << "the two right-angle sides of the triangle are: ";
+    int a,b,res;
+    cin >> a >> b;
+    res = f(a,b);
+    cout << "the hypotenuse of this triangle is " << res;
+    
+    return 0;
+}

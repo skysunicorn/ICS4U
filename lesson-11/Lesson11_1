@@ -1,0 +1,28 @@
+#include <iostream>
+using namespace std;
+
+int main(){
+    int arr[10][10], row, col, sum, i, j;
+    sum = 0;
+    cout << "Enter number of row for Array (max 10): ";
+    cin >> row;
+    cout << "Enter number of column for Array (max 10): ";
+    cin >> col;
+    cout << "Now Enter " << row << "*" << col << " Array Elements:\n";
+    for(i = 0; i < row; i++){
+        for(j = 0; j < col; j++){
+            cin >> arr[i][j];
+            sum += arr[i][j];
+        }
+    }
+    cout << "\nThe Array is:\n";
+    for(i = 0; i < row; i++){
+        for(j = 0; j < col; j++){
+            cout << arr[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << "\nSum of all the elements is: " << sum;
+    
+    return 0;
+}
