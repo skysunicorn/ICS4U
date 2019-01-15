@@ -1,0 +1,546 @@
+//============================================================================
+// Name        : ICS-4U_Lesson23.cpp
+// Author      : Maxwell
+// Date        : 2018.03.12
+//============================================================================
+
+#include <iostream>
+#include <iomanip>
+#include <cstdio>
+#include <string>
+#include <fstream>
+#include "myfunctions.h"
+using namespace std;
+
+int size = 0;
+long long acc_date = 180316;
+long long acc_count = 1;
+long long Administrator[2] = {100000000, 12345678};
+
+/*
+int input_pswd(){
+	char password[100];
+	int index=0;
+	while(1){
+		char ch;
+		ch=getch();
+		if(ch==8){
+			if(index!=0){
+				cout<<char(8)<<" "<<char(8);
+				index--;
+			}
+		}
+		else if(ch=='\r'){
+			password[index]='\0';
+			cout<<endl;
+			break;
+		}
+		else{
+			cout<<"*";
+			password[index++]=ch;
+		}
+	}
+	return password;
+}
+*/
+
+struct Client_info{
+	long long account;
+	long long password;
+	string name;
+	long long phone_number;
+	string address;
+};
+
+struct Balance_detail{
+	double balance;
+	double loan;
+};
+
+class Client_account{
+private:
+	Client_info info;
+	Balance_detail detail;
+public:
+	long long get_acc(){
+		return info.account;
+	}
+	long long get_pswd(){
+		return info.password;
+	}
+	string get_name(){
+		return info.name;
+	}
+	long long get_phone(){
+		return info.phone_number;
+	}
+	string get_address(){
+		return info.address;
+	}
+	void set_info(){
+		long long pswd1 = 1, pswd2 = 2;
+		info.account = acc_date * 1000 + acc_count;
+		acc_count = acc_count + 1;
+		cout << "\nNew account created successfully!\nYour account number is " << info.account << endl;
+		while (pswd1 != pswd2){
+			cout << "\nCreat your password: ";
+			//pswd1 = input_pswd;
+			cin >> pswd1;
+			cout << "\nConfirm your password: ";
+			//pswd2 = input_pswd;
+			cin >> pswd2;
+			if (pswd1 != pswd2){
+				cout << "\nYou must input the same password\nPlease try again\n";
+			}
+		}
+		info.password = pswd1;
+		cout << "\nInput the client name: ";
+		cin >> info.name;
+		cout << "\nInput the phone number: ";
+		cin >> info.phone_number;
+		cout << "\nInput the address: ";
+		cin >> info.address;
+	}
+	void set_pswd(long long pswd){
+		info.password = pswd;
+	}
+	void show_info(){
+		cout << endl;
+		cout << setiosflags(ios::left) << setw(20) << info.account << setw(20) << info.name;
+		cout << setw(20) << info.phone_number << setw(40) << info.address << endl;
+	}
+	double get_balance(){
+		return detail.balance;
+	}
+	double get_loan(){
+		return detail.loan;
+	}
+	void change_balance(double sum){
+		detail.balance = detail.balance + sum;
+	}
+	void change_loan(double sum){
+		detail.loan = detail.loan + sum;
+	}
+};
+
+Client_account table[50];
+
+template<class T>
+void save_table(T& arr){
+	ofstream outFile;
+	outFile.open("client account info.dat", ios::binary | ios::out);
+	for (int i = 0; i < size; i++){
+		outFile.write((char*)&arr[i],sizeof(arr[i]));
+	}
+	outFile.close();
+}
+
+template<class T>
+void read_table(T& arr){
+	ifstream inFile;
+	inFile.open("Client account info.dat",ios::binary);
+	Client_account obj;
+	size = 0;
+	while(inFile.read((char*)&obj, sizeof(obj))){
+		arr[size] = obj;
+		size = size +1;
+		if (obj.get_acc()/1000 == acc_date){
+			acc_count = obj.get_acc() % 1000 + 1;
+		}
+	}
+	inFile.close();
+}
+
+template<class T>
+void show_table(T& arr){
+	cout << endl << setiosflags(ios::left) << setw(20) << "Client account" << setw(20) << "Client name";
+	cout << setw(20) << "phone number" << setw(20) << "address" << endl;
+	for (int i = 0; i < size; i++){
+		arr[i].show_info();
+	}
+}
+
+template<class T>
+void remove_item(T& arr, int index){
+	for (int i = index; i < size - 1; i++){
+		arr[i] = arr[i+1];
+	}
+	size = size - 1;
+}
+
+template<class T>
+void sort_acc(T& arr){
+	Client_account temp;
+	int min;
+	for (int i = 0; i < size; i++){
+		for (int i = 0; i < size - 1; i++){
+			min = i;
+			for (int j = i + 1; j < size; j++){
+				if (arr[j].get_acc() < arr[min].get_acc()){
+					min = j;
+				}
+			}
+			temp = arr[i];
+			arr[i] = arr[min];
+			arr[min] = temp;
+		}
+	}
+}
+
+template<class T>
+void sort_name(T& arr){
+	Client_account temp;
+	int min;
+	for (int i = 0; i < size; i++){
+		for (int i = 0; i < size - 1; i++){
+			min = i;
+			for (int j = i + 1; j < size; j++){
+				if (arr[j].get_name() < arr[min].get_name()){
+					min = j;
+				}
+			}
+			temp = arr[i];
+			arr[i] = arr[min];
+			arr[min] = temp;
+		}
+	}
+}
+
+template<class T>
+int search_acc(T& arr, int acc){
+	int b = 0, m = 0;
+	int e = size - 1;
+	while (b <= e){
+		m = (b + e)/2;
+		if (acc == arr[m].get_acc()){
+			cout << endl << setiosflags(ios::left) << setw(20) << "Client account" << setw(20) << "Client name";
+			cout << setw(20) << "phone number" << setw(20) << "address" << endl;
+			arr[m].show_info();
+			return m;
+		}
+		else if(acc > arr[m].get_acc()){
+			b = m + 1;
+		}
+		else{
+			e = m -1;
+		}
+	}
+	cout << "\nElement not found\n";
+	return -1;
+}
+
+template<class T>
+int search_name(T& arr, string name){
+	int number = 0;
+	for (int i = 0; i < size; i++){
+		if (arr[i].get_name() == name){
+			number++;
+			if (number == 1){
+				cout << endl << setiosflags(ios::left) << setw(20) << "Client account" << setw(20) << "Client name";
+				cout << setw(20) << "phone number" << setw(20) << "address" << endl;
+			}
+			arr[i].show_info();
+		}
+	}
+	if (number == 0){
+		cout << "\nElement not found\n";
+		return -1;
+	}
+	return number;
+}
+
+int mm_login(){
+	long long acc, correct_pswd, input_pswd;
+	int user = -2, option = 1, count = 0;
+	while (user == -2){
+		count++;
+		if (count > 1){
+			cout << "\nUnregistered account! Please register first\n1: Input account again\n2: Register\n";
+			cin >> option;
+		}
+		if (option == 1){
+			cout << "\nPlease enter your account number: ";
+			cin >> acc;
+			if (acc == Administrator[0]){
+				user = -1;
+				break;
+			}
+			for (int i = 0; i < size; i++){
+				if (table[i].get_acc() == acc){
+					user = i;
+					break;
+				}
+			}
+		}
+		else if (option == 2){
+			return -2;
+		}
+	}
+	count = 6;
+	if (user == -1){
+		correct_pswd = Administrator[1];
+	}
+	else{
+		correct_pswd = table[user].get_pswd();
+	}
+	while (count > 0){
+		cout << "\nPlease enter your password: ";
+		cin >> input_pswd;
+		if (input_pswd == correct_pswd){
+			return user;
+		}
+		else{
+			count--;
+			cout << "\nWrong password! Please try again\nYou have " << count << " chances left\n";
+		}
+	}
+	cout << "\nSorry you have used up all the chances.\nPlease take a break, and meanwhile, think about your password carefully\n";
+	return -3;
+}
+
+void uc_search(){
+	int goon = 1, mode = 0;;
+	string msg = "";
+	int key1;
+	string key2;
+	cout << "\nHow would you like to search?\n1: By account number\n2: By client name\n";
+	cin >> mode;
+	if (mode == 1){
+		sort_acc(table);
+		show_table(table);
+		msg = "account";
+	}
+	else if (mode == 2){
+		sort_name(table);
+		show_table(table);
+		msg = "name";
+	}
+	goon = 1;
+	while (goon == 1){
+		cout << "\nInput the " << msg << " you want to search:";
+		if (mode == 1){
+			cin >> key1;
+			search_acc(table, key1);
+		}
+		else if (mode == 2){
+			cin >> key2;
+			search_name(table, key2);
+		}
+		cout << "\nContinue to search?\n0: No\n1: Yes\n";
+		cin >> goon;
+	}
+}
+
+void mm_register(){
+	int confirm = 0;
+	string terms = "\nTerms:\n\tGeorge is the most HANDSOME man on earth\n\tGeorge is the BEST man in the world\n\tI will do whatever George asks me todo";
+	cout << "\nYou are going to create a new account. Before continue, you must agree with the terms below.\n" << terms << "\n0: Cancel\n1: I Agree\n";
+	cin >> confirm;
+	if (confirm == 1){
+		table[size].set_info();
+		size = size + 1;
+		cout << "\nRecord updated successfully\n";
+	}
+}
+
+void uc_seedetail(int client){
+	cout << "\nYour balance account: " << table[client].get_balance() << "$\n";
+	cout << "Your loan account: " << table[client].get_loan() << "$\n";
+}
+
+void uc_deposit(int client){
+	double sum;
+	cout << "\nThe balance in your account is now " << table[client].get_balance() << endl;
+	cout << "\nInput the sum you want to deposit:";
+	cin >> sum;
+	table[client].change_balance(sum);
+	cout << "\nSuccessfully transfered " << sum << "$ into your account!\n";
+}
+
+void uc_withdraw(int client){
+	double sum;
+	int goon = 1;
+	cout << "\nThe balance in your account is now " << table[client].get_balance() << endl;
+	while (goon == 1){
+		cout << "\nInput the sum you want to withdraw:";
+		cin >> sum;
+		if (sum <= table[client].get_balance()){
+			table[client].change_balance(-sum);
+			cout << "\nSuccessfully withdrew " << sum << "$ from your account!\n";
+			goon = 0;
+		}
+		else{
+			cout << "\nSorry, the sum you input exceed your balance(" << table[client].get_balance() << "$).\nDo you want to enter again?\n0: Cancel\n1: Yes\n";
+			cin >> goon;
+		}
+	}
+}
+
+void uc_borrow(int client){
+	if (table[client].get_loan() == 0){
+		int agree;
+		double sum;
+		cout << "\nYou are going to borrow money from Royal George Bank.\nBefore continue, you must agree with the the following terms:";
+		cout << "\n\tYou need to say \"George is the most HANDSOME man in the world!\" after you get your money\n\tYou need to repay the money within THREE months\n\tBefore you repay all your loan, you cannot borrow again\n";
+		cout <<"\n0: Cancel\n1: I cannot agree more\n";
+		cin >> agree;
+		if (agree == 1){
+			cout << "\nInput the sum you want to borrow:";
+			cin >> sum;
+			table[client].change_loan(sum);
+			cout << "\nHere's your money, " << sum << "$ in total, please remember to repay within 3 months\n";
+		}
+		else{
+			cout << "\nBorrowing cancelled successfully!\n";
+		}
+	}
+	else{
+		cout << "\nSorry, there are still " << table[client].get_loan() << "$ remaining to be repaid\nYou cannot borrow again until you have repaid all the money.\n";
+	}
+}
+
+void uc_repay(int client){
+	double sum;
+	cout << "\nThere are now " << table[client].get_loan() << "$ in your loan account\n";
+	cout << "\nInput the sum you want to repay:";
+	cin >> sum;
+	if (sum < table[client].get_loan()){
+		table[client].change_loan(-sum);
+		cout << "\nSuccessfully repaid " << sum << "$\nThere are still " << table[client].get_loan() << "$ remaining to be repaid\n";
+	}
+	else if (sum == table[client].get_loan()){
+		table[client].change_loan(-sum);
+		cout << "\nSuccessfully repaid " << sum << "$\nYou have repaid all the money. Thank you\n";
+	}
+	else if (sum > table[client].get_loan()){
+		table[client].change_balance(sum - table[client].get_loan());
+		table[client].change_loan(-table[client].get_loan());
+		cout << "\nSuccessfully repaid " << sum << "$\nYou have repaid all the money. Thank you\nThe exceeded part had been transferred into your balance automatically\n";
+	}
+}
+
+int uc_resetpswd(int client){
+	cout << "\nFor security concern, you need to enter your previous password.\n";
+	int count = 6;
+	long long correct_pswd, input_pswd;
+	correct_pswd = table[client].get_pswd();
+	while (count > 0){
+		cout << "\nPlease enter your previous password: ";
+		cin >> input_pswd;
+		if (input_pswd == correct_pswd){
+			cout << "\nIdentity confirmed\n";
+			long long pswd1 = 1, pswd2 = 2;
+			while (pswd1 != pswd2){
+				cout << "\nInput your new password: ";
+				//pswd1 = input_pswd();
+				cin >> pswd1;
+				cout << "\nConfirm your password: ";
+				//pswd2 = input_pswd();
+				cin >> pswd2;
+				if (pswd1 != pswd2){
+					cout << "\nYou must input the same password\nPlease try again\n";
+				}
+			}
+			table[client].set_pswd(pswd1);
+			cout << "\nChanged password successfully! New password saved, do remember it\n";
+			return 1;
+		}
+		else{
+			count--;
+			cout << "\nWrong password! Please try again\nYou have " << count << " chances left\n";
+		}
+	}
+	cout << "\nSorry you have used up all the chances.\nPlease take a break, and meanwhile, think about your password carefully\n";
+	return -1;
+}
+
+int main(){
+	cout << "Welcome to the Royal George Bank system\n";
+	read_table(table);
+	int goon1 = 1, goon2 = 1, permission = 0, mode1 = 1, mode2 = 1, user, res;
+	while (goon1 == 1){
+		goon2 = 1, permission = 0, mode1 = 1, mode2 = 1;
+		cout << "\nWhat do you want to do?\n1: Log in\n2: Register new account\n";
+		cin >> mode1;
+		switch(mode1){
+		case 1:
+			user = mm_login();
+			switch (user){
+			case 0 ... 100:
+				permission = 1;
+				break;
+			case -1:
+				permission = 100;
+				break;
+			case -2:
+				mm_register();
+				break;
+			case -3:
+				goon1 = 0;
+				break;
+			}
+			if (permission == 100){
+				while (goon2 == 1){
+					cout << "\nWhat do you want to do?\n1: Search account\n2: Search balance\n";
+					cin >> mode2;
+					switch (mode2){
+					case 1:
+						uc_search();
+						break;
+					case 2:
+						cout << "\nStill developing...\n";
+						break;
+					}
+					cout << "\nAnything else I can help you?\n0: No, thanks\n1: Yeah\n";
+					cin >> goon2;
+				}
+			}
+			else if (permission == 1){
+				while (goon2 == 1){
+					cout << "\nWhat do you want to do?\n1: See detail\n2: Deposit\n3: Withdraw\n4: Borrow\n5: Repay\n6: Reset password\n";
+					cin >> mode2;
+					switch (mode2){
+					case 1:
+						uc_seedetail(user);
+						break;
+					case 2:
+						uc_deposit(user);
+						break;
+					case 3:
+						uc_withdraw(user);
+						break;
+					case 4:
+						uc_borrow(user);
+						break;
+					case 5:
+						uc_repay(user);
+						break;
+					case 6:
+						res = uc_resetpswd(user);
+						if (res == -1){
+							goon2 == 0;
+						}
+						break;
+					}
+					save_table(table);
+					if (goon2 == 1){
+						cout << "\nAnything else I can help you?\n0: No, thanks\n1: Yeah\n";
+						cin >> goon2;
+					}
+				}
+			}
+			break;
+		case 2:
+			mm_register();
+			save_table(table);
+		}
+		if (goon1 == 1){
+			cout << "\nDo you want to exit or go on working?\n0: Exit\n1: Go on\n";
+			cin >> goon1;
+		}
+	}
+	save_table(table);
+	cout << "\nThank you for using\nHave a good day!";
+	return 0;
+}
+
