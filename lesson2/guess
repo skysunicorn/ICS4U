@@ -1,0 +1,37 @@
+
+#include <iostream>
+using namespace std;
+
+int main(){
+	srand((unsigned)time(NULL));
+	int guess = 0;
+	int number = 0;
+	int score = 0;
+	int chance = 0;
+	do{
+		number = rand() % 100 + 1;
+		cout << "have a guess what number I'm thinking about(1~100)" << endl;
+		chance = 8;
+		guess = 0;
+		while (guess!=number && chance!=0){
+			cin >> guess;
+			if(guess == number){
+				cout << "Congratulations! You are right! " << endl << chance << " scores gained. Start another turn." << endl;
+				score += chance;
+				break;
+			}
+			else{
+				chance-=1;
+				if (guess>number){
+					cout << "Too big, guess again" << endl;
+				}
+				else{
+					cout << "Too small, guess again" << endl;
+				}
+			}
+		}
+	}while(chance != 0);
+    cout << "Running out of chances!" << endl;
+	cout << "Game Over!\nYour total score is " << score << endl;
+	return 0;
+}

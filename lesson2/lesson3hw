@@ -1,0 +1,20 @@
+#include <iostream>
+using namespace std;
+
+int main(){
+    cout << "enter amount you are borrowing: ";
+    double borrow;
+    cin >> borrow;
+    cout << "enter interest rate of amount(%): ";
+    double interest_rate;
+    cin >> interest_rate;
+    cout << "enter number of days to keep amount: ";
+    int days;
+    cin >> days;
+    double total;
+    total = borrow + borrow * interest_rate / 36500 * days;
+    cout << "you borrowed " << borrow << "$ at " << interest_rate << "% for " << days << " days" << endl;
+    cout << "your loan amount is " << total << endl;
+    
+    return 0;
+}

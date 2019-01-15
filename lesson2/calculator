@@ -1,0 +1,53 @@
+/*
+name programmer: Maxwell
+date start code: 2018.02.06
+date end code: 2018.02.06
+description: 
+*/
+
+#include <iostream>
+#include <math.h>
+
+using namespace std;
+
+int main(){
+    double n1 = 0;
+    double n2 = 0;
+    bool con = true;
+    do{
+        char op = '0';
+        cout << "input an expression:" << endl;
+        cin >> n1 >> op >>n2;
+        double answer;
+        if(op != '0'){
+            switch (op){
+                case '+':
+                    answer = n1 + n2;
+                    cout << n1 << " + " << n2 << " = " << answer << endl;
+                    break;
+                case '-':
+                    answer = n1 - n2;
+                    cout << n1 << " - " << n2 << " = " << answer << endl;
+                    break;
+                case '*':
+                    answer = n1 * n2;
+                    cout << n1 << " * " << n2 << " = " << answer << endl;
+                    break;
+                case '/':
+                    if(n2 != 0){
+                        answer = n1 / n2;
+                        cout << n1 << " / " << n2 << " = " << answer << endl;
+                        break;
+                    }
+                    else{
+                        cout << "cannot divide by 0" << endl;
+                        break;
+                    }
+            }
+        }
+        else{
+            con = false;
+        }
+    }while(con == true);
+    return 0;
+}

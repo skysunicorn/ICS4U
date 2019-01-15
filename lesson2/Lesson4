@@ -1,0 +1,28 @@
+/*
+name programmer: Maxwell
+date start code: 2018.02.08
+date end code: 2018.02.08
+description: 
+*/
+
+#include <iostream>
+
+using namespace std;
+
+typedef int d;
+typedef char c;
+typedef unsigned short int usd;
+typedef long int ld;
+
+int main(){
+    usd width = 5;
+    usd length = 10;
+    d area = width * length;
+    ld x = 100000000;
+    cout << "Width is " << width << endl;
+    cout << "Length is " << length << endl;
+    cout << "Area is " << area << endl;
+    cout << x << "\n";
+    
+    return 0;
+}

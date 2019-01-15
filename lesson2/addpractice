@@ -1,0 +1,38 @@
+/*
+name programmer: Maxwell
+date start code: 2018.02.06
+date end code: 2018.02.06
+description: 
+*/
+
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    srand((unsigned)time(NULL));
+    bool crt = 1;
+    int a=0;
+    int b=0;
+    int s=0;
+    do{
+        a = rand() % 100;// give a random value from 0 to 99
+        b = rand() % 100;// give b random value from 0 to 99
+        cout << "fill in the blank:\n" << a << " + " << b << " = ";// print the question
+        int result;
+        cin >> result;// input the answer
+        if(result == (a+b)){ // check the answer
+            cout << "Correct" << endl;// tell the answer is right
+            s+=1;// gain one score
+        }
+        else{
+            cout << "Wrong" << endl << "The correct answer is " << a + b << endl;// tell the answer ia wrong and what is the right answer
+            crt = 0;// stop loop
+        }
+    }while(crt == 1);
+    cout << "Total Score: " << s;// print the score
+
+    return 0;
+}
+
