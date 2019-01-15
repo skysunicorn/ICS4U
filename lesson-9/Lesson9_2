@@ -1,0 +1,21 @@
+#include <iostream>
+#include <string>
+#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    cout << "Input the number of students: ";
+    int n;
+    cin >> n;
+    string cars[n+1];
+    cout << "Input there name: " << endl;
+    for (int i = 0; i < n+1; i++){
+        getline(cin,cars[i]);
+    }
+    cout << "\nHere are your students\n";
+    for (int i = 0; i < n+1; i++){
+        cout << cars[i] << endl;
+    }
+    
+    return 0;
+}
