@@ -1,0 +1,23 @@
+//============================================================================
+// Name        : ICS-4U_Lesson13.cpp
+// Author      : Maxwell
+// Date        : 2018.02.23
+//============================================================================
+
+#include <iostream>
+#include "myfunctions.h"
+using namespace std;
+
+int main() {
+	int arr[9] = {5, 1, 6, 4, 2, 3, 9, 8, 7};
+	cout << sum(arr) << endl;
+	cout << max(arr) << endl;
+	cout << min(arr) << endl;
+	display(arr);
+	sort(arr);
+	display(arr);
+	reverse(arr);
+	display(arr);
+
+	return 0;
+}

@@ -1,0 +1,25 @@
+//============================================================================
+// Name        : ICS-4U_Lesson23.cpp
+// Author      : Maxwell
+// Date        : 2018.03.12
+//============================================================================
+
+#include <iostream>
+#include <iomanip>
+#include <cstdio>
+#include <string>
+#include <fstream>
+#include "myfunctions.h"
+using namespace std;
+
+inline int Max(int x, int y){
+	return (x > y)? x:y;
+}
+
+int main(){
+	cout << "Max(20,10) is " << Max(20,10) << endl;
+	cout << "Max(0,200) is " << Max(0,200) << endl;
+	cout << "Max(100,1010) is " << Max(100,1010) << endl;
+
+	return 0;
+}

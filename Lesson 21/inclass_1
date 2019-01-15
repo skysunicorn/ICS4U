@@ -1,0 +1,350 @@
+//============================================================================
+// Name        : ICS-4U_Lesson20.cpp
+// Author      : Maxwell
+// Date        : 2018.03.06
+//============================================================================
+
+#include <iostream>
+#include <cstdio>
+#include <string>
+#include <fstream>
+#include "myfunctions.h"
+using namespace std;
+
+struct Date{
+	int day;
+	int month;
+	int year;
+};
+
+class Student{
+	//student's information and fees
+	int admno;
+	string name;
+	string address;
+
+public:
+	void setInfo(){
+		//input the three information
+		cout << "\nEnter admission no.";
+		cin >> admno;
+		cout << "Enter name of student: ";
+		cin >> name;
+		cout << "Enter address of student: ";
+		cin >> address;
+	}
+	void showInfo(){
+		//print the three information
+		cout << "\nAdmission no." << admno;
+		cout << "\nStudent Name: " << name;
+		cout << "\nStudent Address: " << address;
+	}
+	int retAdmno(){
+		//return student number
+		return admno;
+	}
+	string retName(){
+		//return student name
+		return name;
+	}
+	string retAddress(){
+		//return student address
+		return address;
+	}
+	void search(int n);
+	void seekname(string n);
+};
+
+class Fees{
+	int admno;
+	Date dt;
+	int fee;
+public:
+	void setFees(){
+		//input the date and fee
+		cout << "\nInput the student number: ";
+		cin >> admno;
+		cout << "\nInput the date (day month year): ";
+		cin >> dt.day >> dt.month >> dt.year;
+		cout << "\nInput the fee: ";
+		cin >> fee;
+	}
+	void showFees(){
+		//print the date and fee
+		cout << "\n\nAdmission no." << admno;
+		cout << "\nDate: " << dt.day << "/" << dt.month << "/" << dt.year;
+		cout << "\n\tFee: " << fee;
+	}
+	int retAdmno(){
+		//return student number
+		return admno;
+	}
+	Date retDate(){
+		return dt;
+	}
+};
+
+void sort(){
+	//sort the information by student number
+	//read the file into an array
+	ifstream inFile;
+	inFile.open("student.dat",ios::binary);
+	Student obj, temp;
+	Student arr[50];
+	int size = 0;
+	while(inFile.read((char*)&obj, sizeof(obj))){
+		arr[size] = obj;
+		size = size + 1;
+	}
+	inFile.close();
+	//sort using insertion sort
+	int j;
+	for(int i = 1; i < size; i++){
+		temp=arr[i];
+		j=i-1;
+		while((temp.retAdmno()<arr[j].retAdmno()) && (j>=0)){
+			arr[j+1]=arr[j];
+			j=j-1;
+		}
+		arr[j+1]=temp;
+	}
+	//rewrite the file using sorted information
+	ofstream outFile;
+	outFile.open("student.dat", ios::binary | ios::out);
+	for (int i = 0; i < size; i++){
+		outFile.write((char*)&arr[i],sizeof(arr[i]));
+	}
+}
+
+void write_info(int d = 1){
+	//store information *need to input information using keyboard
+	ofstream outFile;
+	if (d > 0){
+		outFile.open("student.dat", ios::binary | ios::app);
+	}
+	else if (d == 0){
+		outFile.open("student.dat", ios::binary | ios::out);
+	}
+	Student obj;
+	obj.setInfo();
+	outFile.write((char*)&obj,sizeof(obj));
+	outFile.close();
+	sort();
+}
+
+void write_fees(int d = 1){
+	//record fees
+	ofstream outFile;
+	if (d > 0){
+		outFile.open("studentfees.dat", ios::binary | ios::app);
+	}
+	else if (d == 0){
+		outFile.open("studentfees.dat", ios::binary | ios::out);
+	}
+	Fees obj;
+	obj.setFees();
+	outFile.write((char*)&obj,sizeof(obj));
+	outFile.close();
+}
+
+void display_info(){
+	//print all the information to the screen
+	ifstream inFile;
+	inFile.open("student.dat",ios::binary);
+	Student obj;
+	while(inFile.read((char*)&obj, sizeof(obj))){
+		obj.showInfo();
+	}
+	inFile.close();
+}
+
+void display_fee(){
+	//print all the information to the screen
+	ifstream inFile;
+	inFile.open("studentfees.dat",ios::binary);
+	Fees obj;
+	while(inFile.read((char*)&obj, sizeof(obj))){
+		obj.showFees();
+	}
+	inFile.close();
+}
+
+void search_info(int n){
+	//search result using student number
+	//read the file into an array
+	ifstream inFile;
+	inFile.open("student.dat",ios::binary);
+	Student obj, temp;
+	Student arr[50];
+	int size = 0;
+	while(inFile.read((char*)&obj, sizeof(obj))){
+		arr[size] = obj;
+		size = size + 1;
+	}
+	inFile.close();
+	//search using binary search
+	int e,b,m;
+	b = 0;
+	e = size - 1;
+	while (b <= e){
+		m = (b + e)/2;
+		if (n == arr[m].retAdmno()){
+			arr[m].showInfo();
+			break;
+		}
+		else if(n > arr[m].retAdmno()){
+			b = m + 1;
+		}
+		else{
+			e = m -1;
+		}
+	}
+}
+
+void search_fee(int n){
+	ifstream inFile;
+	inFile.open("studentfees.dat",ios::binary);
+	Fees obj;
+	while(inFile.read((char*)&obj,sizeof(obj))){
+		if (obj.retAdmno() == n){
+			obj.showFees();
+		}
+	}
+}
+
+void seekname(string n){
+	//search result using student name
+	ifstream inFile;
+	inFile.open("student.dat",ios::binary);
+	Student obj;
+	while(inFile.read((char*)&obj,sizeof(obj))){
+		if(obj.retName() == n){
+			obj.showInfo();
+		}
+	}
+	inFile.close();
+}
+
+void seekdate(Date dt){
+	//search result using student name
+	ifstream inFile;
+	inFile.open("studentfees.dat",ios::binary);
+	Fees obj;
+	while(inFile.read((char*)&obj,sizeof(obj))){
+		if(obj.retDate().day == dt.day && obj.retDate().month == dt.month && obj.retDate().year == dt.year){
+			obj.showFees();
+		}
+	}
+	inFile.close();
+}
+
+void seekaddress(string ads){
+	//search result using student address
+	ifstream inFile;
+	inFile.open("student.dat",ios::binary);
+	Student obj;
+	while(inFile.read((char*)&obj,sizeof(obj))){
+		if(obj.retAddress() == ads){
+			obj.showInfo();
+		}
+	}
+	inFile.close();
+}
+
+int main(){
+	int mode = 1, mode2 = 0, option = 0, option2 = 0;
+	cout << "What do you want to deal with?\n1: student information\n2: student fees\n";
+	cin >> mode;
+	switch(mode){
+	case 1:
+		//select options
+		cout << "What do you want to do?\n1: store records\n2: display all records\n3: search record\n";
+		cin >> option;
+		switch(option){
+		case 1:
+			//store records
+			int deleteall,num;
+			cout << "Do you want to delete all data?\n0: No\n1: Yes\n";
+			cin >> deleteall;
+			cout << "How many records are you going to input?\n";
+			cin >> num;
+			//Store records in file
+			for (int  i = 1 - deleteall; i <= num - deleteall; i++){
+				write_info(i);
+			}
+			break;
+		case 2:
+			//Display all records
+			cout << "\nList of records";
+			display_info();
+			break;
+		case 3:
+			//Search records
+			cout << "What do you want to search by?\n1: student no.\n2: student name\n3: student address\n";
+			cin >> mode;
+			if (mode == 1){
+				cout << "\nSearch student no.";
+				int recNo = 0;
+				cin >> recNo;
+				search_info(recNo);
+			}
+			else if (mode == 2){
+				cout << "\nSearch student name: ";
+				string sname;
+				cin >> sname;
+				seekname(sname);
+			}
+			else if (mode == 3){
+				cout << "\nSearch student address: ";
+				string ads;
+				cin >> ads;
+				seekaddress(ads);
+			}
+			break;
+		}
+		break;
+	case 2:
+		cout << "What do you want to do?\n1: store records\n2: display all records\n3: search record\n";
+		cin >> option2;
+		switch(option2){
+		case 1:
+			//store records
+			int deleteall,num;
+			cout << "Do you want to delete all data?\n0: No\n1: Yes\n";
+			cin >> deleteall;
+			cout << "How many records are you going to input?\n";
+			cin >> num;
+			//Store records in file
+			for (int  i = 1 - deleteall; i <= num - deleteall; i++){
+				write_fees(i);
+			}
+			break;
+		case 2:
+			//Display all records
+			cout << "\nList of records";
+			display_fee();
+			break;
+		case 3:
+			//Search records
+			cout << "What do you want to search by?\n1: student no.\n2: date\n";
+			cin >> mode2;
+			if (mode2 == 1){
+				cout << "\nSearch student no.";
+				int recNo = 0;
+				cin >> recNo;
+				search_info(recNo);
+				cout << "\n-----------------------------";
+				search_fee(recNo);
+			}
+			else if (mode2 == 2){
+				cout << "\nSearch student date: ";
+				Date dt;
+				cin >> dt.day >> dt.month >> dt.year;
+				seekdate(dt);
+			}
+			break;
+		}
+	}
+
+	return 0;
+}

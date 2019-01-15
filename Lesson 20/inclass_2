@@ -1,0 +1,101 @@
+//============================================================================
+// Name        : ICS-4U_Lesson20.cpp
+// Author      : Maxwell
+// Date        : 2018.03.06
+//============================================================================
+
+#include <iostream>
+#include <cstdio>
+#include <string>
+#include <fstream>
+#include "myfunctions.h"
+using namespace std;
+
+class Student{
+	int admno;
+	string name;
+public:
+	void setData(){
+		cout << "\nEnter admission no.";
+		cin >> admno;
+		cout << "ENter name of student: ";
+		cin >> name;
+	}
+	void showData(){
+		cout << "\nAdmission no." << admno;
+		cout << "\nStudent Name:" << name;
+	}
+	int retAdmno(){
+		return admno;
+	}
+	void search(int n);
+};
+
+void write_record(int d = 0){
+	ofstream outFile;
+	if (d > 0){
+		outFile.open("student2.dat", ios::binary | ios::app);
+	}
+	else if (d == 0){
+		outFile.open("student2.dat", ios::binary | ios::out);
+	}
+	Student obj;
+	obj.setData();
+	outFile.write((char*)&obj,sizeof(obj));
+	outFile.close();
+}
+
+void display(){
+	ifstream inFile;
+	inFile.open("student2.dat",ios::binary);
+	Student obj;
+	while(inFile.read((char*)&obj, sizeof(obj))){
+		obj.showData();
+	}
+	inFile.close();
+}
+
+void search(int n){
+	ifstream inFile;
+	inFile.open("student2.dat",ios::binary);
+	Student obj;
+	while(inFile.read((char*)&obj,sizeof(obj))){
+		if(obj.retAdmno() == n){
+			obj.showData();
+		}
+	}
+	inFile.close();
+}
+
+int main(){
+	int option = 0;
+	cout << "What do you want to do?\n1: store records\n2: display all records\n3: search record\n";
+	cin >> option;
+	switch(option){
+	case 1:
+		int deleteall,num;
+		cout << "Do you want to delete all data?\n0: No\n1: Yes\n";
+		cin >> deleteall;
+		cout << "How many records are you going to input?\n";
+		cin >> num;
+		//Store records in file
+		for (int  i = 1 - deleteall; i <= num - deleteall; i++){
+			write_record(i);
+		}
+		break;
+	case 2:
+		//Display all records
+		cout << "\nList of records";
+		display();
+		break;
+	case 3:
+		//Search record
+		cout << "\nSearch result";
+		int recNo = 0;
+		cin >> recNo;
+		search(recNo);
+		break;
+	}
+
+	return 0;
+}

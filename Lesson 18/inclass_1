@@ -1,0 +1,40 @@
+//============================================================================
+// Name        : ICS-4U_Lesson18.cpp
+// Author      : Maxwell
+// Date        : 2018.03.02
+//============================================================================
+
+#include <iostream>
+#include <stdio.h>
+#include <string>
+#include "myfunctions.h"
+using namespace std;
+
+class Parallelogram{
+protected:
+	int length;
+	int height;
+public:
+	void set_length(int l){
+		length = l;
+	}
+	void set_height(int h){
+		height = h;
+	}
+};
+
+class Rectangle: public Parallelogram{
+public:
+	int get_area(void){
+		return length * height;
+	}
+};
+
+int main(){
+	Rectangle r1;
+	r1.set_length(4);
+	r1.set_height(6);
+	cout << "The Area is " << r1.get_area();
+
+	return 0;
+}

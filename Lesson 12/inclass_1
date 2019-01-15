@@ -1,0 +1,18 @@
+//============================================================================
+// Name        : ICS-4U_Lesson12.cpp
+// Author      : Maxwell
+// Date        : 2018.02.21
+//============================================================================
+
+#include <iostream>
+#include "myfunctions.h"
+using namespace std;
+
+int main() {
+	cout << "input three numbers: ";
+	int a, b, c, d;
+	cin >> a >> b >> c;
+	d = myadd(a,b,c);
+	cout << "the sum is " << d << endl;
+	return 0;
+}

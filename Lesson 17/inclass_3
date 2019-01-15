@@ -1,0 +1,41 @@
+//============================================================================
+// Name        : ICS-4U_Lesson16.cpp
+// Author      : Maxwell
+// Date        : 2018.03.01
+//============================================================================
+
+#include <iostream>
+#include <stdio.h>
+#include <string>
+#include "myfunctions.h"
+using namespace std;
+
+class Test{
+public:
+	int roll;
+private:
+	float per;
+public:
+	Test(){
+		roll = 12345;
+		per = 231;
+	};
+	~Test(){
+		roll = 0;
+	}
+public:
+	void dipdata(void);
+};
+
+void Test::dipdata(void){
+	cout << "data " << Test::per;
+};
+
+int main(){
+	Test t;
+	cout << t.roll;
+	t.dipdata();
+	getchar();
+
+	return 0;
+}

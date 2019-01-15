@@ -1,0 +1,31 @@
+//============================================================================
+// Name        : ICS-4U_Lesson16.cpp
+// Author      : Maxwell
+// Date        : 2018.03.01
+//============================================================================
+
+#include <iostream>
+#include <stdio.h>
+#include <string>
+#include "myfunctions.h"
+using namespace std;
+
+class Computer{
+public:
+	string type;
+	string brand;
+	string system;
+	void greet(){
+		cout << "I'm a " << brand << " " << type << " using " << system << " system." << endl;
+	}
+};
+
+int main(){
+	Computer computer1;
+	computer1.type = "laptop";
+	computer1.brand = "Macbook";
+	computer1.system = "Mac OS";
+	computer1.greet();
+
+	return 0;
+}

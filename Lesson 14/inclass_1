@@ -1,0 +1,18 @@
+//============================================================================
+// Name        : ICS-4U_Lesson14.cpp
+// Author      : Maxwell
+// Date        : 2018.02.26
+//============================================================================
+
+#include <iostream>
+#include "myfunctions.h"
+using namespace std;
+
+int main() {
+	int arr[10] = {10,9,8,7,6,5,4,3,2,1};
+	display(arr, 10);
+	election_sort(arr, 10);
+	display(arr, 10);
+
+	return 0;
+}

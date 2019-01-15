@@ -1,0 +1,21 @@
+//============================================================================
+// Name        : ICS-4U_Lesson16.cpp
+// Author      : Maxwell
+// Date        : 2018.02.28
+//============================================================================
+
+#include <iostream>
+#include <string>
+#include "myfunctions.h"
+using namespace std;
+
+int main() {
+	int arr[12] = {3,7,4,11,8,5,9,2,6,1,12,10};
+	show_arr(arr);
+	cout << find(arr, 9) << endl;
+	sort(arr);
+	show_arr(arr);
+	cout << find(arr, 9, 0, -1, "binary") << endl;
+
+	return 0;
+}

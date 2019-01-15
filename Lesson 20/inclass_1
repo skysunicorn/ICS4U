@@ -1,0 +1,80 @@
+//============================================================================
+// Name        : ICS-4U_Lesson20.cpp
+// Author      : Maxwell
+// Date        : 2018.03.06
+//============================================================================
+
+#include <iostream>
+#include <cstdio>
+#include <string>
+#include <fstream>
+#include "myfunctions.h"
+using namespace std;
+
+class Student{
+	int admno;
+	string name;
+public:
+	void setData(){
+		cout << "\nEnter admission no.";
+		cin >> admno;
+		cout << "ENter name of student: ";
+		cin >> name;
+	}
+	void showData(){
+		cout << "\nAdmission no." << admno;
+		cout << "\nStudent Name:" << name;
+	}
+	int retAdmno(){
+		return admno;
+	}
+	void search(int n);
+};
+
+void write_record(){
+	ofstream outFile;
+	outFile.open("student2.dat", ios::binary | ios::app);
+	Student obj;
+	obj.setData();
+	outFile.write((char*)&obj,sizeof(obj));
+	outFile.close();
+}
+
+void display(){
+	ifstream inFile;
+	inFile.open("student2.dat",ios::binary);
+	Student obj;
+	while(inFile.read((char*)&obj, sizeof(obj))){
+		obj.showData();
+	}
+	inFile.close();
+}
+
+void search(int n){
+	ifstream inFile;
+	inFile.open("student2.dat",ios::binary);
+	Student obj;
+	while(inFile.read((char*)&obj,sizeof(obj))){
+		if(obj.retAdmno() == n){
+			obj.showData();
+		}
+	}
+	inFile.close();
+}
+
+int main(){
+	//Store 4 records in file
+	int recNo = 0;
+	for (int  i = 0; i < 4; i++){
+		write_record();
+	}
+	//Display all records
+	cout << "\nList of records";
+	display();
+	//Search record
+	cout << "\nSearch result";
+	cin >> recNo;
+	search(recNo);
+
+	return 0;
+}

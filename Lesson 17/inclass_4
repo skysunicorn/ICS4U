@@ -1,0 +1,36 @@
+//============================================================================
+// Name        : ICS-4U_Lesson16.cpp
+// Author      : Maxwell
+// Date        : 2018.03.01
+//============================================================================
+
+#include <iostream>
+#include <stdio.h>
+#include <string>
+#include "myfunctions.h"
+using namespace std;
+
+class Test{
+public:
+	int roll;
+private:
+	float per;
+public:
+	void getdate(int, float);
+	void putdata(void){
+		cout << "Roll Number = " << roll << endl;
+		cout << "Percentage = " << per;
+	}
+};
+void Test::getdate(int x, float y){
+	roll = x;
+	per = y;
+}
+
+int main(){
+	Test t;
+	t.getdate(10,80.3);
+	t.putdata();
+
+	return 0;
+}

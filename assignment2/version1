@@ -1,0 +1,248 @@
+//============================================================================
+// Name        : ICS-4U_Lesson23.cpp
+// Author      : Maxwell
+// Date        : 2018.03.12
+//============================================================================
+
+#include <iostream>
+#include <iomanip>
+#include <cstdio>
+#include <string>
+#include <fstream>
+#include "myfunctions.h"
+using namespace std;
+
+int size = 0;
+
+struct Product_info{
+	long int code;
+	string name;
+	double bid_price;
+	double selling_price;
+};
+
+class product{
+private:
+	Product_info info;
+public:
+	long int get_code(){
+		return info.code;
+	}
+	string get_name(){
+		return info.name;
+	}
+	double get_bp(){
+		return info.bid_price;
+	}
+	double get_sp(){
+		return info.selling_price;
+	}
+	void set_info(){
+		cout << "\nInput the product code: ";
+		cin >> info.code;
+		cout << "Input the product name: ";
+		cin >> info.name;
+		cout << "Input the bid price: ";
+		cin >> info.bid_price;
+		cout << "Input the selling price: ";
+		cin >> info.selling_price;
+	}
+	void show_info(){
+		cout << endl;
+		cout << setiosflags(ios::left) << setw(20) << info.code << setw(20) << info.name;
+		cout << setw(20) << info.bid_price << setw(20) << info.selling_price << endl;
+	}
+
+};
+
+template<class T>
+void save_table(T& arr){
+	ofstream outFile;
+	outFile.open("productinfo.dat", ios::binary | ios::out);
+	for (int i = 0; i < size; i++){
+		outFile.write((char*)&arr[i],sizeof(arr[i]));
+	}
+	outFile.close();
+}
+
+template<class T>
+void read_table(T& arr){
+	ifstream inFile;
+	inFile.open("productinfo.dat",ios::binary);
+	product obj;
+	size = 0;
+	while(inFile.read((char*)&obj, sizeof(obj))){
+		arr[size] = obj;
+		size = size +1;
+	}
+	inFile.close();
+}
+
+template<class T>
+void show_table(T& arr){
+	cout << endl << setiosflags(ios::left) << setw(20) << "product code" << setw(20) << "product name";
+	cout << setw(20) << "bid price" << setw(20) << "selling price" << endl;
+	for (int i = 0; i < size; i++){
+		arr[i].show_info();
+	}
+}
+
+template<class T>
+void remove_item(T& arr, int index){
+	for (int i = index; i < size - 1; i++){
+		arr[i] = arr[i+1];
+	}
+	size = size - 1;
+}
+
+template<class T>
+void sort_code(T& arr){
+	product temp;
+	int min;
+	for (int i = 0; i < size; i++){
+		for (int i = 0; i < size - 1; i++){
+			min = i;
+			for (int j = i + 1; j < size; j++){
+				if (arr[j].get_code() < arr[min].get_code()){
+					min = j;
+				}
+			}
+			temp = arr[i];
+			arr[i] = arr[min];
+			arr[min] = temp;
+		}
+	}
+}
+
+template<class T>
+void sort_name(T& arr){
+	product temp;
+	int min;
+	for (int i = 0; i < size; i++){
+		for (int i = 0; i < size - 1; i++){
+			min = i;
+			for (int j = i + 1; j < size; j++){
+				if (arr[j].get_name() < arr[min].get_name()){
+					min = j;
+				}
+			}
+			temp = arr[i];
+			arr[i] = arr[min];
+			arr[min] = temp;
+		}
+	}
+}
+
+template<class T>
+int search_code(T& arr, int code){
+	int b = 0, m = 0;
+	int e = size - 1;
+	while (b <= e){
+		m = (b + e)/2;
+		if (code == arr[m].get_code()){
+			cout << endl << setiosflags(ios::left) << setw(20) << "product code" << setw(20) << "product name";
+			cout << setw(20) << "bid price" << setw(20) << "selling price" << endl;
+			arr[m].show_info();
+			return m;
+		}
+		else if(code > arr[m].get_code()){
+			b = m + 1;
+		}
+		else{
+			e = m -1;
+		}
+	}
+	cout << "Element not found";
+	return -1;
+}
+
+template<class T>
+int search_name(T& arr, string name){
+	int b = 0, m;
+	int e = size - 1;
+	while (b <= e){
+		m = (b + e)/2;
+		if (name == arr[m].get_name()){
+			cout << endl << setiosflags(ios::left) << setw(20) << "product code" << setw(20) << "product name";
+			cout << setw(20) << "bid price" << setw(20) << "selling price" << endl;
+			arr[m].show_info();
+			return m;
+		}
+		else if(name > arr[m].get_name()){
+			b = m + 1;
+		}
+		else{
+			e = m -1;
+		}
+	}
+	cout << "Element not found";
+	return -1;
+}
+
+int main(){
+	cout << "Welcome to the product information system\n";
+	product table[50];
+	read_table(table);
+	int goon1 = 1, goon2 = 1, mode1 = 0, mode2 = 0, delete_mode = 0, index = -1, confirm = 0;
+	while (goon1 == 1){
+		cout << "\nWhat do you want to do?\n1: Search\n2: Add record\n";
+		cin >> mode1;
+		string msg = "";
+		int key1;
+		string key2;
+		switch(mode1){
+		case 1:
+			cout << "\nDo you want to enter the delete mode?\n0: No\n1: Yes\n";
+			cin >> delete_mode;
+			cout << "\nHow would you like to search?\n1: By product code\n2: By product name\n";
+			cin >> mode2;
+			if (mode2 == 1){
+				sort_code(table);
+				show_table(table);
+				msg = "code";
+			}
+			else if (mode2 == 2){
+				sort_name(table);
+				show_table(table);
+				msg = "name";
+			}
+			goon2 = 1;
+			while (goon2 == 1){
+				cout << "\nInput the " << msg << " you want to search:";
+				if (mode2 == 1){
+					cin >> key1;
+					index = search_code(table, key1);
+				}
+				else if (mode2 == 2){
+					cin >> key2;
+					index = search_name(table, key2);
+				}
+				if (delete_mode == 1 && index != -1){
+					cout << "\nDo you want to delete this record?\n0: No\n1: Yes\n";
+					cin >> confirm;
+					if (confirm == 1){
+						remove_item(table, index);
+						cout << "\nRecord removed successfully\n";
+					}
+				}
+				cout << "\nContinue to search?\n0: No\n1: Yes\n";
+				cin >> goon2;
+			}
+			break;
+		case 2:
+			cout << "\nHow many elements do you want to input ? ";
+			int app;
+			cin >> app;
+			for (int i = size; i < size + app; i++){
+				table[i].set_info();
+			}
+			size = size + app;
+			cout << "\nRecord updated successfully\n";
+		}
+		cout << "\nDo you want to exit or go on working?\n0: Exit\n1: Go on\n";
+		cin >> goon1;
+	}
+	save_table(table);
+	cout << "\nThank you for using\nHave a good day!";
+	return 0;
+}

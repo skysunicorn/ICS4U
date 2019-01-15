@@ -1,0 +1,49 @@
+//============================================================================
+// Name        : ICS-4U_Lesson18.cpp
+// Author      : Maxwell
+// Date        : 2018.03.05
+//============================================================================
+
+#include <iostream>
+#include <stdio.h>
+#include <string>
+#include "myfunctions.h"
+using namespace std;
+
+class Animal{
+    public:
+    void say(){
+        cout << "method say of class Animal being called\n";
+    }
+    Animal(){
+        cout << "Class Animal been created\n";
+    }
+    ~Animal(){
+        cout << "Class Animal been destroyed\n";
+    }
+};
+
+class Hagrid: public Animal{
+    public:
+    void say(){
+        cout << "method say of class Hagrid Animal being called\n";
+    }
+    Hagrid(){
+        cout << "Class Hagrid been created\n";
+    }
+    ~Hagrid(){
+        cout << "Class Hagrid been destroyed\n";
+    }
+};
+
+int main()
+{
+    Hagrid a;
+    a.say();
+    getchar();
+
+    return 0;
+}
+
+
+

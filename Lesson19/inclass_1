@@ -1,0 +1,38 @@
+//============================================================================
+// Name        : ICS-4U_Lesson18.cpp
+// Author      : Maxwell
+// Date        : 2018.03.05
+//============================================================================
+
+#include <iostream>
+#include <stdio.h>
+#include <string>
+#include "myfunctions.h"
+using namespace std;
+
+class Base{
+public:
+	void show(){
+			cout <<"Base class\n";
+		}
+	void show(int x){
+		cout << x <<"Base class\n";
+	}
+};
+
+class Derived: public Base{
+public:
+	void show(){
+		cout << "Derived Class\n";
+	}
+};
+
+int main(){
+	Base b;
+	Derived d;
+	b.show();
+	b.show(1000);
+	d.show();
+
+	return 0;
+}

@@ -1,0 +1,21 @@
+//============================================================================
+// Name        : ICS-4U_Lesson18.cpp
+// Author      : Maxwell
+// Date        : 2018.03.05
+//============================================================================
+
+#include <iostream>
+#include <stdio.h>
+#include <string>
+#include <fstream>
+#include "myfunctions.h"
+using namespace std;
+
+int main(){
+	ofstream myfile;
+	myfile.open("/Users/wyy/Desktop/example.txt");
+	myfile << "Writing this to a file. \n";
+	myfile.close();
+
+	return 0;
+}

@@ -1,0 +1,32 @@
+//============================================================================
+// Name        : ICS-4U_Lesson16.cpp
+// Author      : Maxwell
+// Date        : 2018.02.28
+//============================================================================
+
+#include <iostream>
+#include <stdio.h>
+#include <string>
+#include "myfunctions.h"
+using namespace std;
+
+struct Student{
+	string name;
+	int age;
+	string gender;
+	int student_number;
+};
+
+int main() {
+	Student hagrid;
+	cout << "Enter Full name: ";
+	getline(cin, hagrid.name);
+	cout << "Enter age: ";
+	cin >> hagrid.age;
+	cout << "Enter gender: ";
+	cin >> hagrid.gender;
+	cout << "Enter student number: ";
+	scanf("%d",&hagrid.student_number);
+
+	return 0;
+}
