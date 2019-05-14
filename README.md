@@ -1,2 +1,2 @@
 # ICS4U
-in class assignment and homework for ICS-4U
+in class assignment, homework and final project for ICS-4U
